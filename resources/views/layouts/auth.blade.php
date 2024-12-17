@@ -13,12 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
 
     <!-- plugins:css -->
-    @vite([
-    'resources/assets/vendors/mdi/css/materialdesignicons.min.css',
-    'resources/assets/vendors/css/vendor.bundle.base.css"',
-    'resources/assets/css/style.css',
-    'resources/js/app.js',
-    ])
+    @include('auth.includes.css')
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{{ Vite::asset('resources/assets/images/favicon.png')}}" />
 </head>
@@ -339,15 +334,7 @@
         <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
-    @vite([
-
-    'resources/assets/vendors/js/vendor.bundle.base.js',
-    'resources/assets/js/off-canvas.js',
-    'resources/assets/js/hoverable-collapse.js',
-    'resources/assets/js/misc.js',
-    'resources/assets/js/settings.js',
-    'resources/assets/js/todolist.js',
-    ])
+    @include('auth.includes.js')
 </body>
 
 </html>
