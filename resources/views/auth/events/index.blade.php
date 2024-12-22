@@ -3,6 +3,7 @@
 
 @section('css')
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
 
 
@@ -41,12 +42,10 @@
                             <tr>
                                 <th> # </th>
                                 <th> Name </th>
-                                <th> Description </th>
-                                <th> Category </th>
                                 <th> Location </th>
-                                <th> Type </th>
                                 <th> Price </th>
                                 <th> Max Attendence </th>
+                                <th> Type </th>
                                 <th> Actions </th>
                             </tr>
                         </thead>
@@ -55,9 +54,9 @@
                             <tr>
                                 <td>{{$loop->iteration}}</td>
                                 <td>{{$event->name}}</td>
-                                <td>{{Str::limit($event->description, 15)}}</td>
-                                <td>{{$event->category->name}}</td>
                                 <td>{{$event->location}}</td>
+                                <td>{{number_format($event->price, 2)}}</td>
+                                <td>{{$event->max_attendence}}</td>
                                 <td>
                                     @if($event->type == 'FREE')
                                     <span class="badge badge-primary">{{$event->type}}</span>
@@ -65,13 +64,13 @@
                                     <span class="badge badge-success">{{$event->type}}</span>
                                     @endif
                                 </td>
-                                <td>{{number_format($event->price, 2)}}</td>
-                                <td>{{$event->max_attendence}}</td>
                                 <td class="d-flex">
-                                    <a href="" class="btn btn-success">Show</a> &nbsp;
-                                    <a href="" class="btn btn-info">Edit</a>&nbsp;
-                                    <form action="">
-                                        <button class="btn btn-danger">Delete</button>
+                                    <a href="{{route('events.show', $event->id)}}" class="btn btn-success">Show</a> &nbsp;
+                                    <a href="{{route('events.edit', $event->id)}}" class="btn btn-info">Edit</a>&nbsp;
+                                    <form action="{{route('events.destroy', $event->id)}}" method="post" class="event-delete-form">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger delete-btn">Delete</button>
                                     </form>
                                 </td>
                             </tr>
@@ -79,7 +78,7 @@
                         </tbody>
                     </table>
                     @else
-                    <p class="text-danger text-bold">No events created yet.</p>
+                    <p class="text-danger text-bold text-center">No events created yet.</p>
                     @endif
                 </div>
             </div>
@@ -90,9 +89,38 @@
 
 @section('script')
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.dataTables.bootstrap4.js"></script>
 <script>
     $(document).ready(function() {
         $('#event-table').DataTable();
+    });
+
+    $(document).ready(function() {
+        $('.delete-btn').click(function(e) {
+            e.preventDefault();
+            //  if (confirm('Are you sure? You want to delete it')) {
+            //    $('.event-delete-form').submit();
+            // }
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('.event-delete-form').submit();
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success"
+                    });
+                }
+            })
+        });
     });
 </script>
 @endsection

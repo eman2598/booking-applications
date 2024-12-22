@@ -15,6 +15,7 @@
     <!-- plugins:css -->
     @include('auth.includes.css')
     @yield('css')
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{{ Vite::asset('resources/assets/images/favicon.png')}}" />
 </head>
