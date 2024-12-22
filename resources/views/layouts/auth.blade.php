@@ -14,6 +14,7 @@
 
     <!-- plugins:css -->
     @include('auth.includes.css')
+    @yield('css')
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{{ Vite::asset('resources/assets/images/favicon.png')}}" />
 </head>
@@ -338,6 +339,7 @@
     </div>
     <!-- container-scroller -->
     @include('auth.includes.js')
+    @yield('script')
 </body>
 
 </html>

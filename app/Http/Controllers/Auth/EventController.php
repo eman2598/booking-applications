@@ -15,7 +15,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        return 'I am index page';
+        $events = Event::all();
+        return view('auth.events.index', compact('events'));
     }
 
     /**
@@ -50,10 +51,10 @@ class EventController extends Controller
                 'end_date' => $request->end_date,
                 'max_attendence' => $request->max_attendence,
             ]);
-            session()->flash('Event saved successfully');
+            session()->flash('success_msg', 'Event saved successfully');
             return to_route('events.index');
         } catch (\Exception $ex) {
-            return back()->withErrors('Something went wrong, the error is: ' . $ex->getMessage());
+            return back()->withInput()->withErrors('Something went wrong, the error is: ' . $ex->getMessage());
         }
     }
 
