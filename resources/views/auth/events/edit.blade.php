@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="row">
+    <a href="{{route('events.index')}}" class="btn btn-info mb-3 mt-0">Go Back</a>
     <div class="col-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
