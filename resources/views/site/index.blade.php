@@ -53,7 +53,7 @@
                             <span class="badge badge-free">Free</span>
                             @endif
                         </p>
-                        <a href="{{ route('site.event.details', $event->id) }}" class="btn w-100" style="background-color: #1e8d52; color:white">View Details</a>
+                        <a href="{{ route('site.events.details', $event->id) }}" class="btn w-100" style="background-color: #1e8d52; color:white">View Details</a>
                     </div>
                 </div>
             </div>
