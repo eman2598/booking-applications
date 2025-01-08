@@ -5,10 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\Event\CreateRequest;
 use App\Http\Requests\Auth\Event\UpdateRequest;
+use App\Models\Booking;
 use App\Models\Category;
 use App\Models\Event;
-use Illuminate\Http\Request;
-use PhpParser\Node\Stmt\Return_;
 
 class EventController extends Controller
 {
@@ -17,15 +16,28 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::all();
+        $user = auth()->user();
+
+        $eventsQuery = $user->role === 'user'
+            ? Event::whereIn('id', Booking::where('user_id', $user->id)
+                ->whereIn('status', ['paid', 'free'])
+                ->pluck('events_id'))
+            : Event::query();
+
+        $events = $eventsQuery->get();
+
         return view('auth.events.index', compact('events'));
     }
+
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
+        if (! auth()->user()->role == 'admin') {
+            return abort(403, 'You are not authorized for this page');
+        }
         $categories = Category::all();
         return view('auth.events.create', compact('categories'));
     }
@@ -74,6 +86,9 @@ class EventController extends Controller
      */
     public function edit(Event $event)
     {
+        if (! auth()->user()->role == 'admin') {
+            return abort(403, 'You are not authorized for this page');
+        }
         $categories = Category::all();
         return view('auth.events.edit', compact('categories', 'event'));
     }
@@ -114,6 +129,9 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
+        if (! auth()->user()->role == 'admin') {
+            return abort(403, 'You are not authorized for this page');
+        }
         try {
             $event->delete();
 

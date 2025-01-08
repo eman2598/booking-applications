@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use App\Models\Booking;
 use App\Models\Event;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -19,11 +22,10 @@ class HomeController extends Controller
         return view('site.details', compact('event'));
     }
 
-    public function checkout()
+    public function checkout(Request $request)
     {
-        $userId = auth()->id();
-        $eventId = request()->event_id;
-
+        $userId = Auth::id();
+        $eventId = $request->event_id;
         $event = Event::findOrFail($eventId);
 
         try {
@@ -32,11 +34,14 @@ class HomeController extends Controller
                 'events_id' => $eventId,
             ]);
 
-            return to_route('site.thanks')->with('success_msg', 'Your Booking Confirmed');
+            return redirect()->route('site.thanku')->with('success_msg', 'Your Booking Confirmed');
         } catch (\Exception $ex) {
+            Log::error('Booking failed: ' . $ex->getMessage());
             return back()->with('booking_failed', 'Your booking is failed, please try again');
         }
     }
+
+
 
     public function openThankuPage()
     {

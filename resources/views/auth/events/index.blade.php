@@ -30,7 +30,12 @@
         </div>
         @endif
     </div>
-    <a href="{{route('events.create')}}" class="btn btn-info mb-3 mt-0">New Event</a>
+    <div>
+        @if(auth()->user()->role == 'admin')
+        <a href="{{route('events.create')}}" class="btn btn-info mb-3 mt-0">New Event</a>
+        @endif
+
+    </div>
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
@@ -66,12 +71,14 @@
                                 </td>
                                 <td class="d-flex">
                                     <a href="{{route('events.show', $event->id)}}" class="btn btn-success">Show</a> &nbsp;
+                                    @if(auth()->user()->role == 'admin')
                                     <a href="{{route('events.edit', $event->id)}}" class="btn btn-info">Edit</a>&nbsp;
                                     <form action="{{route('events.destroy', $event->id)}}" method="post" class="event-delete-form">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-danger delete-btn">Delete</button>
                                     </form>
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach

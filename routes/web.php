@@ -18,7 +18,10 @@ Route::prefix('auth')->middleware(['auth', 'verified'])->group(function () {
 });
 Route::get('/', [HomeController::class, 'openHomePage'])->name('site.home');
 Route::get('events/{id}', [HomeController::class, 'openEventsDetailsPage'])->name('site.events.details');
-Route::get('checkout', [HomeController::class, 'checkout'])->name('checkout')->middleware('auth');
+
+Route::post('checkout', [HomeController::class, 'checkout'])
+    ->name('checkout')
+    ->middleware('auth');
 
 Route::get('thanku/', [HomeController::class, 'openThankuPage'])->name('site.thanku');
 Route::get('cancel/', [HomeController::class, 'openCancelPage'])->name('site.cancel');

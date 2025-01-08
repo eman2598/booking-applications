@@ -67,6 +67,14 @@
                         <span class="menu-title">Events</span>
                     </a>
                 </li>
+                    <form method="post" action="{{ route('logout') }}">
+                        @csrf
+                        <button class="mt-3">
+                            <div class="preview-item-content">
+                                <p class="preview-subject mb-1">Log out</p>
+                            </div>
+                        </button>
+                    </form>
             </ul>
         </nav>
         <!-- partial -->

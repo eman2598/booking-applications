@@ -95,11 +95,12 @@
 
 <div class="container my-5">
 
-    @if (session('booking_failed'))
-    <div class="alert alert-danger" role="alert">
-        {{ session()->get('booking_failed') }}
+    @if($errors->has('booking_failed'))
+    <div class="alert alert-danger">
+        {{ $errors->first('booking_failed') }}
     </div>
     @endif
+
 
     <div class="row mb-3">
         <div class="col-2">
@@ -138,21 +139,23 @@
 
                 </p>
 
-                <div class="text-center">
-                    <form action="{{ route('checkout') }}" method="GET">
-                        <input type="hidden" name="event_id" value="{{ $event->id }}">
-                        <button type="submit" class="btn btn-success btn-lg">Checkout</button>
-                    </form>
+                <form action="{{ route('checkout') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="event_id" value="{{ $event->id }}">
+                    <button type="submit" class="btn btn-success btn-lg">Checkout</button>
+                </form>
 
-                </div>
+
 
             </div>
+
         </div>
-
-
-        @else
-        <p class="text-danger text-center text-bold mt-3">Unable to find the event details.</p>
-        @endif
     </div>
+
+
+    @else
+    <p class="text-danger text-center text-bold mt-3">Unable to find the event details.</p>
+    @endif
+</div>
 </div>
 @endsection
