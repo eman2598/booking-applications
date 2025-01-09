@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\DashboardController;
 use App\Http\Controllers\Auth\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
@@ -10,9 +11,7 @@ Route::get('/', function () {
 });
 
 Route::prefix('auth')->middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('auth.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'openDashboardPage'])->name('dashboard');
 
     Route::resource('events', EventController::class);
 });

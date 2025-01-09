@@ -18,16 +18,24 @@ class EventController extends Controller
     {
         $user = auth()->user();
 
-        $eventsQuery = $user->role === 'user'
-            ? Event::whereIn('id', Booking::where('user_id', $user->id)
+        if ($user->role === 'user') {
+            $eventIds = Booking::where('user_id', $user->id)
                 ->whereIn('status', ['paid', 'free'])
-                ->pluck('events_id'))
-            : Event::query();
+                ->pluck('events_id');
 
-        $events = $eventsQuery->get();
+            \Illuminate\Support\Facades\Log::info('Event IDs fetched for user:', $eventIds->toArray()); // Log fetched IDs
+
+            $events = Event::whereIn('id', $eventIds)->get();
+
+            \Illuminate\Support\Facades\Log::info('Events fetched:', $events->toArray()); // Log events fetched
+        } else {
+            $events = Event::all(); // Admin can view all events
+        }
 
         return view('auth.events.index', compact('events'));
     }
+
+
 
 
     /**

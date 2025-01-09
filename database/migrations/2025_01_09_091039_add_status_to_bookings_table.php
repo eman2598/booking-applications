@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bookings', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('events_id')->constrained();
-            $table->timestamps();
+        Schema::table('bookings', function (Blueprint $table) {
+            $table->string('status', 30)->nullable()->default('paid');
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bookings');
+        Schema::table('bookings', function (Blueprint $table) {
+            $table->dropColumn('status');
+        });
     }
 };

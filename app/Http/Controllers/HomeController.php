@@ -24,22 +24,29 @@ class HomeController extends Controller
 
     public function checkout(Request $request)
     {
+        $request->validate([
+            'event_id' => 'required|exists:events,id',
+            'status' => 'nullable|string|in:paid,free',
+        ]);
+
         $userId = Auth::id();
         $eventId = $request->event_id;
         $event = Event::findOrFail($eventId);
 
         try {
-            Booking::create([
+            $booking = Booking::create([
                 'user_id' => $userId,
                 'events_id' => $eventId,
+                'status' => $request->status ?? 'paid',
             ]);
 
             return redirect()->route('site.thanku')->with('success_msg', 'Your Booking Confirmed');
         } catch (\Exception $ex) {
             Log::error('Booking failed: ' . $ex->getMessage());
-            return back()->with('booking_failed', 'Your booking is failed, please try again');
+            return back()->with('booking_failed', 'Your booking has failed, please try again');
         }
     }
+
 
 
 
