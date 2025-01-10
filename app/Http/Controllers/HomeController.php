@@ -26,7 +26,7 @@ class HomeController extends Controller
     {
         $request->validate([
             'event_id' => 'required|exists:events,id',
-            'status' => 'nullable|string|in:paid,free',
+            'status' => 'nullable|string|in:paid,free', // Ensure the status is either 'paid' or 'free'
         ]);
 
         $userId = Auth::id();
@@ -37,7 +37,7 @@ class HomeController extends Controller
             $booking = Booking::create([
                 'user_id' => $userId,
                 'events_id' => $eventId,
-                'status' => $request->status ?? 'paid',
+                'status' => $request->status ?? 'paid', // Default to 'paid' if no status is provided
             ]);
 
             return redirect()->route('site.thanku')->with('success_msg', 'Your Booking Confirmed');

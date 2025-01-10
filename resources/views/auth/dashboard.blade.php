@@ -28,7 +28,7 @@
                     <div class="row">
                         <div class="col-8 col-sm-12 col-xl-8 my-auto">
                             <div class="d-flex d-sm-block d-md-flex align-items-center">
-                                <h2 class="mb-0">{{$incomplete_bookings_count? $incomplete_bookings_count: 0}}</h2>
+                                <h2 class="mb-0">{{$incomplete_bookings? $incomplete_bookings: 0}}</h2>
                             </div>
                             <h6 class="text-muted font-weight-normal">Lifetime bookings</h6>
                         </div>
